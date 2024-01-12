@@ -1,0 +1,4 @@
+-- Unfinished Parts [Tesla SQL Interview Question]
+
+SELECT DISTINCT part, assembly_step FROM parts_assembly
+where finish_date is NULL;
