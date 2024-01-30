@@ -1,0 +1,18 @@
+-- Odd and Even Measurements [Google SQL Interview Question]
+
+with table1 AS
+(SELECT *,
+      DENSE_RANK() OVER(PARTITION BY date(measurement_time) ORDER BY measurement_time) AS rank_order 
+FROM measurements
+ORDER BY measurement_time, rank_order)
+
+SELECT date_trunc('day', t1.measurement_time) AS measurement_day,
+       SUM(CASE
+        WHEN t1.rank_order%2 != 0 THEN measurement_value
+       END) AS odd_sum,
+       SUM(CASE
+        WHEN t1.rank_order%2 = 0 THEN measurement_value
+       END) AS even_sum
+FROM table1 t1
+GROUP BY measurement_day
+ORDER BY measurement_day
